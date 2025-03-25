@@ -1,2 +1,2 @@
 # chit-chat-bot
-it's a ai chatting app.
+it's a text based Ai.
