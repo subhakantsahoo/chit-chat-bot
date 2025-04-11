@@ -12,23 +12,76 @@ import {
   StyleSheet,
   Animated,
 } from "react-native";
+import { launchImageLibrary } from "react-native-image-picker";
+import UploadedImagePage from "./uploaded-image/uploaded-image";
+
 
 const API_KEY_GIMINI = process.env.NEXT_PUBLIC_API_KEY_GIMINI || "";
 const AI_MODEL = process.env.NEXT_PUBLIC_AI_MODEL || "";
 
 export default function Home() {
+
   const [tweet, setTweet] = useState("");
-  const [error, setError] = useState("");
+  const [errorText, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [messages, setMessages] = useState<{ text: string; type: string }[]>([]);
+  const [messages, setMessages] = useState<{ text: string; type: string }[]>(
+    []
+  );
+  const [imageUri, setImageUri] = useState<string | null>(null);
+
   const messagesEndRef = useRef<ScrollView | null>(null);
 
   const [isMobile, setIsMobile] = useState(false);
   const [hydrated, setHydrated] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
+  const [page, setPage] = useState<number>(0);
   const sidebarAnim = useRef(new Animated.Value(-300)).current;
 
+ 
+  const handleAttachFile = async () => {
+    try {
+      const result = await launchImageLibrary({
+        mediaType: "photo",
+        quality: 0.8,
+        includeBase64: false,
+      });
+  
+      if (result.didCancel || result.errorCode || !result.assets?.[0]?.uri) return;
+  
+      const asset = result.assets[0];
+      const uri = asset.uri as string;
+      const name = asset.fileName || `image-${Date.now()}.jpg`;
+  
+      // Create FormData object
+      const formData = new FormData();
+      
+      // Solution 1: Convert the image to a Blob first
+      const response = await fetch(uri);
+      const blob = await response.blob();
+      
+      // Append as proper Blob with filename
+      formData.append("file", blob, name);
+  
+      const uploadResponse = await fetch("/api/s3-upload", {
+        method: "POST",
+        body: formData,
+        // Headers will be set automatically by FormData
+      });
+  
+      const data = await uploadResponse.json();
+  
+      if (!uploadResponse.ok) {
+        throw new Error(data.error || "Upload failed");
+      }
+  
+      console.log("Upload successful:", data);
+      setImageUri(uri); // Update state with the image URI
+      return data;
+    } catch (err) {
+      console.error("Upload error:", err);
+      throw err;
+    }
+  };
   // Sidebar toggle
   const toggleSidebar = () => {
     if (isMobile) {
@@ -76,18 +129,33 @@ export default function Home() {
 
   const genAI = new GoogleGenerativeAI(API_KEY_GIMINI);
   const model = genAI.getGenerativeModel({ model: AI_MODEL });
-
+  
   const handleOpenAPI = async () => {
     if (!tweet.trim()) return;
-
+    // if (ima)
     setError("");
     setLoading(true);
-
     setMessages((prev) => [...prev, { text: tweet, type: "user" }]);
     setTweet("");
 
     try {
-      const result = await model.generateContent(tweet);
+         console.log('imageUrl=-=-=->',imageUri);
+         console.log('tweet =-=-=--=-=>',tweet);
+         const promptParts = [];
+
+         if (imageUri) {
+          const base64Data = imageUri.split(",")[1];
+
+          promptParts.push({
+            inlineData: {
+                mimeType: "image/png", // Adjust for JPEG or other formats
+                data: base64Data,
+            },
+        });
+        }
+        
+        promptParts.push({ text: tweet });
+      const result = await model.generateContent(promptParts);
       const response = await result.response;
       const text = response.text();
 
@@ -101,6 +169,7 @@ export default function Home() {
       setError("An error occurred. Please try again.");
     } finally {
       setLoading(false);
+      setImageUri(null); // Reset image URI after sending
     }
   };
 
@@ -109,6 +178,12 @@ export default function Home() {
     return <Text>Loading...</Text>;
   }
 
+  const handleMapImage = (page:number) => {
+    console.log("called");
+    setPage(page);
+    //  return <UploadedImagePage/>
+    // router.push('/uploaded-image');
+  };
   return (
     <View style={styles.dashboard}>
       {/* Sidebar for Web (always visible) */}
@@ -116,91 +191,126 @@ export default function Home() {
         <View style={styles.sidebar}>
           <Text style={styles.sidebarTitle}>Dashboard</Text>
           <View>
-            <Text style={styles.sidebarItem}>Home</Text>
+          <TouchableOpacity
+              onPress={() => {
+                handleMapImage(0);
+              }}
+              style={{}}
+            >
+              <Text style={styles.sidebarItem}>Home</Text>
+            </TouchableOpacity>
             <Text style={styles.sidebarItem}>Sentiment Analysis</Text>
             <Text style={styles.sidebarItem}>Reports</Text>
             <Text style={styles.sidebarItem}>Settings</Text>
+            <TouchableOpacity
+              onPress={() => {
+                handleMapImage(6);
+              }}
+              style={{}}
+            >
+              <Text style={styles.sidebarItem}>Uploaed Image</Text>
+            </TouchableOpacity>
           </View>
         </View>
       ) : (
         <>
           {/* Mobile Sidebar */}
-          {isSidebarOpen &&    <Animated.View
-            style={[
-              styles.sidebar,
-              { transform: [{ translateX: sidebarAnim }] },
-            ]}
-          >
-            <Text style={styles.sidebarTitle}>Dashboard</Text>
-            <TouchableOpacity onPress={toggleSidebar} style={styles.closeBtn}>
-              <Text style={styles.closeText}>✕</Text>
-            </TouchableOpacity>
-            <View>
-              <Text style={styles.sidebarItem}>Home</Text>
-              <Text style={styles.sidebarItem}>Sentiment Analysis</Text>
-              <Text style={styles.sidebarItem}>Reports</Text>
-              <Text style={styles.sidebarItem}>Settings</Text>
-            </View>
-          </Animated.View>}
-       
+          {isSidebarOpen && (
+            <Animated.View
+              style={[
+                styles.sidebar,
+                { transform: [{ translateX: sidebarAnim }] },
+              ]}
+            >
+              <Text style={styles.sidebarTitle}>Dashboard</Text>
+              <TouchableOpacity onPress={toggleSidebar} style={styles.closeBtn}>
+                <Text style={styles.closeText}>✕</Text>
+              </TouchableOpacity>
+              <View>
+                <Text style={styles.sidebarItem}>Home</Text>
+                <Text style={styles.sidebarItem}>Sentiment Analysis</Text>
+                <Text style={styles.sidebarItem}>Reports</Text>
+                <Text style={styles.sidebarItem}>Settings</Text>
+              </View>
+            </Animated.View>
+          )}
 
           {/* Hamburger Menu */}
-          {!isSidebarOpen &&  <TouchableOpacity style={styles.hamburger} onPress={toggleSidebar}>
-            <Text style={styles.hamburgerText}>☰</Text>
-          </TouchableOpacity> }
-         
+          {!isSidebarOpen && (
+            <TouchableOpacity style={styles.hamburger} onPress={toggleSidebar}>
+              <Text style={styles.hamburgerText}>☰</Text>
+            </TouchableOpacity>
+          )}
         </>
       )}
 
       <View style={styles.mainContent}>
-        <ScrollView
-          ref={messagesEndRef}
-          contentContainerStyle={{ paddingBottom: 60 }}
-        >
-          <View style={styles.card}>
-            <Text style={styles.title}>Ai-chat-Bot</Text>
-            <Text style={styles.description}>What can I help with?</Text>
-          </View>
-          <View style={{ padding:20}}>
-          {messages.map((msg, index) => (
-            <View
-              key={index}
-              style={[
-                styles.message,
-                msg.type === "user"
-                  ? [styles.userMessage, { maxWidth: isMobile ? "80%" : "60%" }]
-                  : [styles.aiMessage, { maxWidth: isMobile ? "80%" : "60%" }],
-                msg.type === "tweakPrompt" && styles.tweakPrompt,
-              ]}
+        {page === 6 ? (
+          <UploadedImagePage />
+        ) : (
+          <>
+            <ScrollView
+              ref={messagesEndRef}
+              contentContainerStyle={{ paddingBottom: 60 }}
             >
-              <Text style={styles.messageText}>{msg.text}</Text>
-            </View>
-          ))}
-          </View>
-          {error && <Text style={styles.error}>{error}</Text>}
-        </ScrollView>
+              <View style={styles.card}>
+                <Text style={styles.title}>Ai-chat-Bot</Text>
+                <Text style={styles.description}>What can I help with?</Text>
+              </View>
+              <View style={{ padding: 20 }}>
+                {messages.map((msg, index) => (
+                  <View
+                    key={index}
+                    style={[
+                      styles.message,
+                      msg.type === "user"
+                        ? [
+                            styles.userMessage,
+                            { maxWidth: isMobile ? "80%" : "60%" },
+                          ]
+                        : [
+                            styles.aiMessage,
+                            { maxWidth: isMobile ? "80%" : "60%" },
+                          ],
+                      msg.type === "tweakPrompt" && styles.tweakPrompt,
+                    ]}
+                  >
+                    <Text style={styles.messageText}>{msg.text}</Text>
+                  </View>
+                ))}
+              </View>
+              {errorText && <Text style={styles.error}>{errorText}</Text>}
+            </ScrollView>
 
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.textInput}
-            placeholder="Ask anything..."
-            placeholderTextColor="#aaa"
-            value={tweet}
-            onChangeText={setTweet}
-            onSubmitEditing={handleOpenAPI}
-          />
-          <TouchableOpacity
-            style={styles.btn}
-            onPress={handleOpenAPI}
-            disabled={loading}
-          >
-            {loading ? (
-              <ActivityIndicator color="#fff" />
-            ) : (
-              <Text style={styles.btnText}>Send</Text>
-            )}
-          </TouchableOpacity>
-        </View>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.textInput}
+                placeholder="Ask anything..."
+                placeholderTextColor="#aaa"
+                value={tweet}
+                onChangeText={setTweet}
+                onSubmitEditing={handleOpenAPI}
+              />
+              <TouchableOpacity
+                style={styles.attachBtn}
+                onPress={handleAttachFile}
+              >
+                <Text style={styles.attachIcon}>📎 {imageUri && `(${1})`}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.btn}
+                onPress={handleOpenAPI}
+                disabled={loading}
+              >
+                {loading ? (
+                  <ActivityIndicator color="#fff" />
+                ) : (
+                  <Text style={styles.btnText}>Send</Text>
+                )}
+              </TouchableOpacity>
+            </View>
+          </>
+        )}
       </View>
     </View>
   );
@@ -244,7 +354,7 @@ const styles = StyleSheet.create({
     padding: 12,
     backgroundColor: "#333",
     color: "#fff",
-    borderRadius:5
+    borderRadius: 5,
   },
   btn: {
     backgroundColor: "#0070f3",
@@ -320,5 +430,13 @@ const styles = StyleSheet.create({
     borderTopColor: "#555",
     backgroundColor: "#1F2937",
     alignItems: "center",
+  },
+  attachBtn: {
+    padding: 8,
+    marginLeft: 8,
+  },
+  attachIcon: {
+    fontSize: 22,
+    color: "#fff",
   },
 });
