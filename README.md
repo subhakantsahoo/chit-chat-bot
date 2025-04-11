@@ -3,6 +3,8 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 ## Getting Started
 
 
+## Production Url    https://main.d3g1sjoperhwf0.amplifyapp.com/
+
 ## Screenshot  
 
 ![Screenshot](./public/Screenshot%20from%202025-04-11%2016-12-56.png)
