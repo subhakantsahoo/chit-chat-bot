@@ -10,10 +10,9 @@ frontend:
       commands:
         - yarn build
   artifacts:
-    baseDirectory: dist # or .next or build — depends on your framework
+    baseDirectory: .next
     files:
       - '**/*'
   cache:
     paths:
-      - node_modules/**
-
+      - node_modules/**/*
