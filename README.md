@@ -5,7 +5,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Screenshot  
 
-![Screenshot](./public/screenshot.png)
+![Screenshot](./public/Screenshot%20from%202025-04-11%2016-12-56.png)
 
 First, run the development server:
 
