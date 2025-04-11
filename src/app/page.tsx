@@ -139,8 +139,6 @@ export default function Home() {
     setTweet("");
 
     try {
-         console.log('imageUrl=-=-=->',imageUri);
-         console.log('tweet =-=-=--=-=>',tweet);
          const promptParts = [];
 
          if (imageUri) {
