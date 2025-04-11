@@ -16,16 +16,26 @@ export default function UploadedImagePage() {
   const { width } = useWindowDimensions();
   const isMobile = width <= 742;
 
+
+  
   const listImagesInFolder = async (): Promise<string[]> => {
     try {
       const res = await fetch("/api/s3-upload"); // Adjust path if hosted separately
-      const data = await res.json();
 
       // Only return image URLs
-      console.log("data-=-=--=-=-=-=>", data);
+      interface S3File {
+        fileName: string;
+        fileUrl: string;
+      }
+
+      interface S3Response {
+        files: S3File[];
+      }
+
+      const data: S3Response = await res.json();
       const imageUrls = data.files
-        .filter((file: any) => /\.(jpe?g|png|webp|gif)$/i.test(file.fileName)) // filter only image files
-        .map((file: any) => file.fileUrl);
+        .filter((file: S3File) => /\.(jpe?g|png|webp|gif)$/i.test(file.fileName)) // filter only image files
+        .map((file: S3File) => file.fileUrl);
 
       return imageUrls;
     } catch (error) {
