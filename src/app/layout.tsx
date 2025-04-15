@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
