@@ -184,8 +184,7 @@ export default function Home() {
       <SEO
         title="Open AI 2.0"
         description="A cool AI chatbot built with Next.js and Gemini API"
-        keywords="chatbot, generative AI, Gemini, Next.js,AI chatbot, Next.js, Gemini API, image recognition, NLP, chatbot automation"
-        author="Subhakanta Sahoo"
+    
       />
 
       <View style={styles.dashboard}>
