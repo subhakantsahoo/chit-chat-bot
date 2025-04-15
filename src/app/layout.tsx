@@ -51,6 +51,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+      <meta name="google-site-verification" content="tz0vyvbN578ZjU6pI7AMNOQjs6p_RiRCxTCPsrGov_o" />
         <link rel="icon" href="/fox-svgrepo-com.svg" type="image/svg+xml" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
