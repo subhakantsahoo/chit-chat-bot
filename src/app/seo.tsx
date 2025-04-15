@@ -9,7 +9,7 @@ interface SEOProps {
 }
 
 export default function SEO({
-  title = "AI Chat Bot",
+  title = "Open Ai 2.0",
   description = "AI Chat Bot to assist you with various tasks.",
   keywords = "AI, Chatbot, Generative AI, Next.js",
   author = "Subhakanta sahoo",
@@ -26,6 +26,7 @@ export default function SEO({
       <meta property="og:description" content={description} />
       <meta property="og:type" content="website" />
       <meta property="og:url" content={url} />
+      <meta property="og:image" content="https://demobuket-fx007.s3.eu-north-1.amazonaws.com/Ai-chat-bot/image-1744700940595.jpg" />
       {/* Canonical Link */}
       <link rel="canonical" href={url} />
     </Head>
