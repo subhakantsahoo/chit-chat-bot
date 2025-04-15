@@ -14,12 +14,35 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ai-chat-Bot",
+  title: "Open Ai 2.0",
   description: "AI-powered chatbot for real-time communication and automation.",
   openGraph: {
-    url: apiUrl || 'AI-kit-kat',  // Use the production URL here
-  }
+    title: "Open Ai 2.0",
+    description: "AI-powered chatbot for real-time communication and automation.",
+    url: process.env.NEXT_PUBLIC_API_URL || "https://main.d3g1sjoperhwf0.amplifyapp.com/",
+    images: ["https://metatags.io/images/meta-tags.png"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Open Ai 2.0",
+    description: "AI-powered chatbot for real-time communication and automation.",
+    images: ["https://metatags.io/images/meta-tags.png"],
+  },
+  keywords: [
+    "chatbot",
+    "generative AI",
+    "Gemini",
+    "Next.js",
+    "AI chatbot",
+    "image recognition",
+    "automation",
+    "Open Ai 2.0",
+    "Ai-chat-Bot",
+    "AI-kit-kat"
+  ],
+  authors: [{ name: "Subhakanta Sahoo" }],
 };
+
 
 export default function RootLayout({
   children,

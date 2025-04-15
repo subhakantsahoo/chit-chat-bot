@@ -277,7 +277,7 @@ export default function Home() {
                 contentContainerStyle={{ paddingBottom: 60 }}
               >
                 <View style={styles.card}>
-                  <Text style={styles.title}>Ai-chat-Bot</Text>
+                  <Text style={styles.title}>Open Ai 2.0</Text>
                   <Text style={styles.description}>What can I help with?</Text>
                 </View>
                 <View style={{ padding: 20 }}>
