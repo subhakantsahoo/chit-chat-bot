@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import { launchImageLibrary } from "react-native-image-picker";
 import UploadedImagePage from "./uploaded-image/uploaded-image";
-
+import SEO from "./seo";
 const API_KEY_GIMINI = process.env.NEXT_PUBLIC_API_KEY_GIMINI || "";
 const AI_MODEL = process.env.NEXT_PUBLIC_AI_MODEL || "";
 
@@ -177,164 +177,182 @@ export default function Home() {
   const handleMapImage = (page: number) => {
     console.log("called");
     setPage(page);
-      setIsSidebarOpen((prev) => !prev);
+    setIsSidebarOpen((prev) => !prev);
   };
   return (
-    <View style={styles.dashboard}>
-      {/* Sidebar for Web (always visible) */}
-      {!isMobile ? (
-        <View style={styles.sidebar}>
-          <Text style={styles.sidebarTitle}>Dashboard</Text>
-          <View>
-            <TouchableOpacity
-              onPress={() => {
-                handleMapImage(0);
-              }}
-              style={{}}
-            >
-              <Text style={styles.sidebarItem}>Home</Text>
-            </TouchableOpacity>
-            <Text style={styles.sidebarItem}>Sentiment Analysis</Text>
-            <Text style={styles.sidebarItem}>Reports</Text>
-            <Text style={styles.sidebarItem}>Settings</Text>
-            <TouchableOpacity
-              onPress={() => {
-                handleMapImage(6);
-              }}
-              style={{}}
-            >
-              <Text style={styles.sidebarItem}>Uploaed Image</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      ) : (
-        <>
-          {/* Mobile Sidebar */}
-          {isSidebarOpen && (
-            <Animated.View
-              style={[
-                styles.sidebar,
-                { transform: [{ translateX: sidebarAnim }] },
-              ]}
-            >
-              <Text style={styles.sidebarTitle}>Dashboard</Text>
-              <TouchableOpacity onPress={toggleSidebar} style={styles.closeBtn}>
-                <Text style={styles.closeText}>✕</Text>
-              </TouchableOpacity>
-              <View>
-                <TouchableOpacity
-                  onPress={() => {
-                    handleMapImage(0);
-                  }}
-                  style={{}}
-                >
-                  <Text style={styles.sidebarItem}>Home</Text>
-                </TouchableOpacity>
-                <Text style={styles.sidebarItem}>Sentiment Analysis</Text>
-                <Text style={styles.sidebarItem}>Reports</Text>
-                <Text style={styles.sidebarItem}>Settings</Text>
-                <TouchableOpacity
-                  onPress={() => {
-                    handleMapImage(6);
-                  }}
-                  style={{}}
-                >
-                  <Text style={styles.sidebarItem}>Uploaed Image</Text>
-                </TouchableOpacity>
-              </View>
-            </Animated.View>
-          )}
+    <>
+      <SEO
+        title="Open AI 2.0"
+        description="A cool AI chatbot built with Next.js and Gemini API"
+        keywords="chatbot, generative AI, Gemini, Next.js,AI chatbot, Next.js, Gemini API, image recognition, NLP, chatbot automation"
+        author="Subhakanta Sahoo"
+      />
 
-          {/* Hamburger Menu */}
-          {!isSidebarOpen && (
-            <TouchableOpacity style={styles.hamburger} onPress={toggleSidebar}>
-              <Text style={styles.hamburgerText}>☰</Text>
-            </TouchableOpacity>
-          )}
-        </>
-      )}
-
-      <View style={styles.mainContent}>
-        {page === 6 ? (
-          <UploadedImagePage />
-        ) : (
-          <>
-            <ScrollView
-              ref={messagesEndRef}
-              contentContainerStyle={{ paddingBottom: 60 }}
-            >
-              <View style={styles.card}>
-                <Text style={styles.title}>Ai-chat-Bot</Text>
-                <Text style={styles.description}>What can I help with?</Text>
-              </View>
-              <View style={{ padding: 20 }}>
-                {messages.map((msg, index) => (
-                  <View
-                    key={index}
-                    style={[
-                      styles.message,
-                      msg.type === "user"
-                        ? [
-                            styles.userMessage,
-                            { maxWidth: isMobile ? "80%" : "60%" },
-                          ]
-                        : [
-                            styles.aiMessage,
-                            { maxWidth: isMobile ? "80%" : "60%" },
-                          ],
-                      msg.type === "tweakPrompt" && styles.tweakPrompt,
-                    ]}
-                  >
-                    <Text style={styles.messageText}>{msg.text}</Text>
-                  </View>
-                ))}
-              </View>
-              {errorText && <Text style={styles.error}>{errorText}</Text>}
-            </ScrollView>
-
-            <View
-              style={[
-                styles.inputContainer,
-                { marginBottom: isMobile ? 60 : 0 },
-              ]}
-            >
-              <TextInput
-                style={styles.textInput}
-                placeholder="Ask anything..."
-                placeholderTextColor="#aaa"
-                value={tweet}
-                onChangeText={setTweet}
-                onSubmitEditing={handleOpenAPI}
-              />
+      <View style={styles.dashboard}>
+        {/* Sidebar for Web (always visible) */}
+        {!isMobile ? (
+          <View style={styles.sidebar}>
+            <Text style={styles.sidebarTitle}>Dashboard</Text>
+            <View>
               <TouchableOpacity
-                style={[styles.attachBtn, { marginLeft: isMobile ? 2 : 8 }]}
-                onPress={handleAttachFile}
+                onPress={() => {
+                  handleMapImage(0);
+                }}
+                style={{}}
               >
-                <Text
-                  style={[styles.attachIcon, { fontSize: isMobile ? 18 : 22 }]}
-                >
-                  📎 {imageUri && `(${1})`}
-                </Text>
+                <Text style={styles.sidebarItem}>Home</Text>
               </TouchableOpacity>
+              <Text style={styles.sidebarItem}>Sentiment Analysis</Text>
+              <Text style={styles.sidebarItem}>Reports</Text>
+              <Text style={styles.sidebarItem}>Settings</Text>
               <TouchableOpacity
-                style={[
-                  styles.btn,
-                  { marginRight: 10, padding: isMobile ? 10 : 12 },
-                ]}
-                onPress={handleOpenAPI}
-                disabled={loading}
+                onPress={() => {
+                  handleMapImage(6);
+                }}
+                style={{}}
               >
-                {loading ? (
-                  <ActivityIndicator color="#fff" />
-                ) : (
-                  <Text style={styles.btnText}>Send</Text>
-                )}
+                <Text style={styles.sidebarItem}>Uploaed Image</Text>
               </TouchableOpacity>
             </View>
+          </View>
+        ) : (
+          <>
+            {/* Mobile Sidebar */}
+            {isSidebarOpen && (
+              <Animated.View
+                style={[
+                  styles.sidebar,
+                  { transform: [{ translateX: sidebarAnim }] },
+                ]}
+              >
+                <Text style={styles.sidebarTitle}>Dashboard</Text>
+                <TouchableOpacity
+                  onPress={toggleSidebar}
+                  style={styles.closeBtn}
+                >
+                  <Text style={styles.closeText}>✕</Text>
+                </TouchableOpacity>
+                <View>
+                  <TouchableOpacity
+                    onPress={() => {
+                      handleMapImage(0);
+                    }}
+                    style={{}}
+                  >
+                    <Text style={styles.sidebarItem}>Home</Text>
+                  </TouchableOpacity>
+                  <Text style={styles.sidebarItem}>Sentiment Analysis</Text>
+                  <Text style={styles.sidebarItem}>Reports</Text>
+                  <Text style={styles.sidebarItem}>Settings</Text>
+                  <TouchableOpacity
+                    onPress={() => {
+                      handleMapImage(6);
+                    }}
+                    style={{}}
+                  >
+                    <Text style={styles.sidebarItem}>Uploaed Image</Text>
+                  </TouchableOpacity>
+                </View>
+              </Animated.View>
+            )}
+
+            {/* Hamburger Menu */}
+            {!isSidebarOpen && (
+              <TouchableOpacity
+                style={styles.hamburger}
+                onPress={toggleSidebar}
+              >
+                <Text style={styles.hamburgerText}>☰</Text>
+              </TouchableOpacity>
+            )}
           </>
         )}
+
+        <View style={styles.mainContent}>
+          {page === 6 ? (
+            <UploadedImagePage />
+          ) : (
+            <>
+              <ScrollView
+                ref={messagesEndRef}
+                contentContainerStyle={{ paddingBottom: 60 }}
+              >
+                <View style={styles.card}>
+                  <Text style={styles.title}>Ai-chat-Bot</Text>
+                  <Text style={styles.description}>What can I help with?</Text>
+                </View>
+                <View style={{ padding: 20 }}>
+                  {messages.map((msg, index) => (
+                    <View
+                      key={index}
+                      style={[
+                        styles.message,
+                        msg.type === "user"
+                          ? [
+                              styles.userMessage,
+                              { maxWidth: isMobile ? "80%" : "60%" },
+                            ]
+                          : [
+                              styles.aiMessage,
+                              { maxWidth: isMobile ? "80%" : "60%" },
+                            ],
+                        msg.type === "tweakPrompt" && styles.tweakPrompt,
+                      ]}
+                    >
+                      <Text style={styles.messageText}>{msg.text}</Text>
+                    </View>
+                  ))}
+                </View>
+                {errorText && <Text style={styles.error}>{errorText}</Text>}
+              </ScrollView>
+
+              <View
+                style={[
+                  styles.inputContainer,
+                  { marginBottom: isMobile ? 60 : 0 },
+                ]}
+              >
+                <TextInput
+                  style={styles.textInput}
+                  placeholder="Ask anything..."
+                  placeholderTextColor="#aaa"
+                  value={tweet}
+                  onChangeText={setTweet}
+                  onSubmitEditing={handleOpenAPI}
+                />
+                <TouchableOpacity
+                  style={[styles.attachBtn, { marginLeft: isMobile ? 2 : 8 }]}
+                  onPress={handleAttachFile}
+                >
+                  <Text
+                    style={[
+                      styles.attachIcon,
+                      { fontSize: isMobile ? 18 : 22 },
+                    ]}
+                  >
+                    📎 {imageUri && `(${1})`}
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
+                    styles.btn,
+                    { marginRight: 10, padding: isMobile ? 10 : 12 },
+                  ]}
+                  onPress={handleOpenAPI}
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <ActivityIndicator color="#fff" />
+                  ) : (
+                    <Text style={styles.btnText}>Send</Text>
+                  )}
+                </TouchableOpacity>
+              </View>
+            </>
+          )}
+        </View>
       </View>
-    </View>
+    </>
   );
 }
 
