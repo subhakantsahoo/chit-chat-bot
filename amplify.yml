@@ -5,7 +5,7 @@ frontend:
       commands:
         - nvm install 20
         - nvm use 20
-        - echo "API Key: $NEXT_PUBLIC_API_KEY_GIMINI"
+        # Removed echo for API Key to improve security
         - yarn install --frozen-lockfile
     build:
       commands:
