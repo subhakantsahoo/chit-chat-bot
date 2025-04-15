@@ -17,6 +17,8 @@ export default function SEO({
   keywords = "chatbot, generative AI, Gemini, Next.js,AI chatbot, Next.js, Gemini API, image recognition, NLP, chatbot automation,Open Ai 2.0",
   author = "Subhakanta Sahoo",
 }: SEOProps) {
+  console.log('called SEO component');
+  
   return (
     <Head>
       {/* Primary Meta Tags */}
