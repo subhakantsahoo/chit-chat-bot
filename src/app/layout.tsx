@@ -14,45 +14,34 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Talk to AI Instantly | Open Ai 2.0 – Chatbot for Automation",
-  description:  "Advanced AI chatbot for real-time conversations, task automation, and image analysis. Powered by Gemini and Next.js.",
+  description:
+    "Advanced AI chatbot for real-time conversations, task automation, and image analysis. Powered by Gemini and Next.js.",
   openGraph: {
     title: "Open Ai 2.0",
-    description: "AI-powered chatbot for real-time communication and automation.",
-    url: process.env.NEXT_PUBLIC_API_URL || "https://main.d3g1sjoperhwf0.amplifyapp.com/",
+    description:
+      "AI-powered chatbot for real-time communication and automation.",
+    url:
+      process.env.NEXT_PUBLIC_API_URL ||
+      "https://main.d3g1sjoperhwf0.amplifyapp.com/",
     images: ["https://metatags.io/images/meta-tags.png"],
   },
   twitter: {
     card: "summary_large_image",
     title: "Open Ai 2.0",
-    description: "AI-powered chatbot for real-time communication and automation.",
+    description:
+      "AI-powered chatbot for real-time communication and automation.",
     images: ["https://metatags.io/images/meta-tags.png"],
   },
   keywords: [
-    "chatbot",
-    "generative AI",
-    "Gemini",
-    "Next.js",
-    "AI chatbot",
-    "image recognition",
-    "automation",
-    "Open Ai 2.0",
-    "Ai-chat-Bot",
-    "AI-kit-kat",
-    "real-time",
-    "subhakanta sahoo",
-    "subh AI-chat",
     "Open Ai 2.0 chatbot",
-    "free Gemini AI chat",
-    "AI with image recognition",
-    "real-time chatbot demo",
-    "Next.js AI example",
-    "Amplify hosted chatbot",
-    "unique AI assistant",
-    "d3g1sjoperhwf0 AI" 
+    "Gemini AI chat",
+    "Next.js AI assistant",
+    "real-time image recognition",
+    "Subhakanta Sahoo AI developer",
+    "d3g1sjoperhwf0 AI",
   ],
   authors: [{ name: "Subhakanta Sahoo" }],
 };
-
 
 export default function RootLayout({
   children,
@@ -62,7 +51,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-      <meta name="google-site-verification" content="tz0vyvbN578ZjU6pI7AMNOQjs6p_RiRCxTCPsrGov_o" />
+        <meta
+          name="google-site-verification"
+          content="tz0vyvbN578ZjU6pI7AMNOQjs6p_RiRCxTCPsrGov_o"
+        />
         <link rel="icon" href="/fox-svgrepo-com.svg" type="image/svg+xml" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
