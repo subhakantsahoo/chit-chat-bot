@@ -5,6 +5,12 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Production Url    https://main.d3g1sjoperhwf0.amplifyapp.com/
 
+## SEO Search 
+
+Open Ai 2.0 site:main.d3g1sjoperhwf0.amplifyapp.com
+Open Ai 2.0 site:main.d3g1sjoperhwf0.amplifyapp.com -free
+Open Ai 2.0 site:main.d3g1sjoperhwf0.amplifyapp.com intitle:"Open Ai 2.0"
+
 ## Screenshot  
 
 ![Screenshot](./public/Screenshot%20from%202025-04-11%2016-12-56.png)
