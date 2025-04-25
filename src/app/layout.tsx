@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Talk to AI Instantly | Open Ai 2.0 – Chatbot for Automation",
-  description:  "Chat instantly with our AI-powered assistant. Open Ai 2.0 helps you automate tasks, answer questions, and recognize images in real time.",
+  description:  "Advanced AI chatbot for real-time conversations, task automation, and image analysis. Powered by Gemini and Next.js.",
   openGraph: {
     title: "Open Ai 2.0",
     description: "AI-powered chatbot for real-time communication and automation.",
@@ -38,7 +38,17 @@ export const metadata: Metadata = {
     "Open Ai 2.0",
     "Ai-chat-Bot",
     "AI-kit-kat",
-    "real-time"
+    "real-time",
+    "subhakanta sahoo",
+    "subh AI-chat",
+    "Open Ai 2.0 chatbot",
+    "free Gemini AI chat",
+    "AI with image recognition",
+    "real-time chatbot demo",
+    "Next.js AI example",
+    "Amplify hosted chatbot",
+    "unique AI assistant",
+    "d3g1sjoperhwf0 AI" 
   ],
   authors: [{ name: "Subhakanta Sahoo" }],
 };
